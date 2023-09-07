@@ -27,6 +27,9 @@ export class CreateUserDto {
   @ApiProperty({ required: false })
   bio?: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(6)
   @ApiProperty()
   password: string;
 
