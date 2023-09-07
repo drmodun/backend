@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int          @id @default(autoincrement())
+  name       String
+  bio        String?
+  created    DateTime     @default(now())
+  updated    DateTime     @default(now())
+  password   String
+  email      String
+  age        Int
+  Reviews    Review[]
+  Likes      Likes[]
+  Dislikes   Dislikes[]
+  Favourites Favourites[]
+}
+
+model Review {
+  id       Int        @id @default(autoincrement())
+  UserId   Int?
+  author   User?      @relation(fields: [UserId], references: [id])
+  GameId   Int //usually would make an N-N connection, however considering that the games are not saved on this database no connections will be useful, instead I will just use filters
+  title    String
+  score    Int
+  body     String
+  likes    Likes[]
+  Dislikes Dislikes[]
+}
+
+model Likes {
+  reviewId Int
+  userId   Int
+  review   Review?  @relation(fields: [reviewId], references: [id])
+  user     User?    @relation(fields: [userId], references: [id])
+  likedAt  DateTime @default(now())
+
+  @@id([reviewId, userId])
+}
+
+model Dislikes {
+  reviewId   Int
+  userId     Int
+  review     Review?  @relation(fields: [reviewId], references: [id])
+  user       User?    @relation(fields: [userId], references: [id])
+  dislikedAt DateTime @default(now())
+
+  @@id([reviewId, userId])
+}
+
+model Favourites {
+  userId Int
+  gameId Int
+  user   User? @relation(fields: [userId], references: [id])
+
+  @@id([userId, gameId])
+}
