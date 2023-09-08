@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  ParseIntPipe,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,20 +31,29 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get('me')
+  getMe(@Req() req: any) {
+    return this.usersService.findOne(req.user.id);
+  }
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return await this.usersService.update(+id, updateUserDto);
   }
 
