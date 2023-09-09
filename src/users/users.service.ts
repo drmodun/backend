@@ -18,7 +18,11 @@ export class UsersService {
       roundsOfHashing,
     );
     createUserDto.password = hashedPassword;
-    return this.prisma.user.create({ data: createUserDto });
+    try {
+      return await this.prisma.user.create({ data: createUserDto });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   findAll() {

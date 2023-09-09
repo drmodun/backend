@@ -32,11 +32,4 @@ export class CreateUserDto {
   @MinLength(6)
   @ApiProperty()
   password: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Min(5)
-  @Max(99)
-  @ApiProperty()
-  age: number;
 }
