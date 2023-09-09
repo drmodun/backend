@@ -49,19 +49,20 @@ export class UsersController {
     return new UserEntity(await this.usersService.findOne(+id));
   }
 
-  @Patch(':id')
+  @Patch()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return new UserEntity(await this.usersService.update(+id, updateUserDto));
+  async update(@Req() req: any, @Body() updateUserDto: UpdateUserDto) {
+    return new UserEntity(
+      await this.usersService.update(req.user.id, updateUserDto),
+    );
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    const deletion = await this.usersService.remove(+id);
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  async remove(@Req() req: any) {
+    const deletion = await this.usersService.remove(req.user.id);
     return deletion;
   }
 }
