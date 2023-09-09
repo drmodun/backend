@@ -18,7 +18,6 @@ model User {
   updated    DateTime     @default(now())
   password   String
   email      String       @unique
-  age        Int
   Reviews    Review[]
   Likes      Likes[]
   Dislikes   Dislikes[]
