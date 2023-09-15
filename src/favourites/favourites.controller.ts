@@ -59,4 +59,12 @@ export class FavouritesController {
     const deletion = await this.favouritesService.delete(gameId, req.user.id);
     return deletion ? true : false;
   }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get()
+  async findAllByUser(@Req() req: any) {
+    const favourites = await this.favouritesService.findAll(req.user.id);
+    return favourites.map((favourite) => new FavouriteEntity(favourite));
+  }
 }
