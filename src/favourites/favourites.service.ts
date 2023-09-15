@@ -34,4 +34,15 @@ export class FavouritesService {
       },
     });
   }
+
+  async isFavourite(gameId: number, userId: number) {
+    return this.prisma.favourites.findUnique({
+      where: {
+        userId_gameId: {
+          gameId: gameId,
+          userId: userId,
+        },
+      },
+    });
+  }
 }

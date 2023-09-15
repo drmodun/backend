@@ -23,6 +23,19 @@ export class FavouritesController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @Get('/games/:id')
+  async isFavourite(
+    @Param('id', ParseIntPipe) gameId: number,
+    @Req() req: any,
+  ): Promise<boolean> {
+    const isFavourite = await this.favouritesService.isFavourite(
+      gameId,
+      req.user.id,
+    );
+    return isFavourite ? true : false;
+  }
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   async create(@Req() req: any, @Body() request: CreateFavoriteDto) {
     return new FavouriteEntity(
