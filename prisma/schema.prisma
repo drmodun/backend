@@ -60,7 +60,10 @@ model Dislikes {
 model Favourites {
   userId Int
   gameId Int
-  user   User? @relation(fields: [userId], references: [id])
+  user   User?    @relation(fields: [userId], references: [id])
+  genres String[]
 
+  //Gotta save genres here since they dont appear on the details of the game
+  //Also unfortunately I can't make a relation to the game since it's not on this database so N+1 queries might be a thing
   @@id([userId, gameId])
 }
