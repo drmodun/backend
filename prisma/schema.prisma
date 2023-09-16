@@ -27,12 +27,14 @@ model User {
 
 model Review {
   id       Int        @id @default(autoincrement())
-  UserId   Int?
-  author   User?      @relation(fields: [UserId], references: [id])
-  GameId   Int //usually would make an N-N connection, however considering that the games are not saved on this database no connections will be useful, instead I will just use filters
+  userId   Int?
+  author   User?      @relation(fields: [userId], references: [id])
+  gameId   Int //usually would make an N-N connection, however considering that the games are not saved on this database no connections will be useful, instead I will just use filters
   title    String
   score    Int
   body     String
+  gameName String
+  date     DateTime   @default(now())
   likes    Likes[]
   Dislikes Dislikes[]
 }
