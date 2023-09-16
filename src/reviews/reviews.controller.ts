@@ -22,6 +22,14 @@ import { ReviewEntity } from './entities/review.entity';
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get('me')
+  async getMe(@Req() req: any) {
+    const reviews = await this.reviewsService.findAllForUser(req.user.id);
+    return reviews.map((review) => new ReviewEntity(review));
+  }
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post(':gameId')
@@ -31,13 +39,6 @@ export class ReviewsController {
     @Param('gameId', ParseIntPipe) gameId: number,
   ) {
     return this.reviewsService.create(createReviewDto, req.user.id, gameId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @Get('me')
-  async getMe(@Req() req: any) {
-    return new ReviewEntity(await this.reviewsService.findOne(req.user.id));
   }
 
   @Get('games/:gameId')

@@ -29,7 +29,12 @@ export class ReviewsService {
         gameId: gameId,
       },
       include: {
-        author: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
   }
@@ -40,7 +45,12 @@ export class ReviewsService {
         userId: userId,
       },
       include: {
-        author: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
   }
