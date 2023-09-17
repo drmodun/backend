@@ -16,6 +16,7 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ReviewEntity } from './entities/review.entity';
+import { AvarageEntity } from './entities/review-avg.entity';
 
 @Controller('reviews')
 @ApiTags('reviews')
@@ -28,6 +29,21 @@ export class ReviewsController {
   async getMe(@Req() req: any) {
     const reviews = await this.reviewsService.findAllForUser(req.user.id);
     return reviews.map((review) => new ReviewEntity(review));
+  }
+
+  @Get('avg')
+  async getAllAvarages() {
+    const avarages = await this.reviewsService.getAllAvaragesForEachGame();
+    return avarages.map(
+      (avarage) =>
+        new AvarageEntity(avarage._avg.score, avarage.gameId, avarage._count),
+    );
+  }
+
+  @Get('avg/:gameId')
+  async getAvaregeForGame(@Param('gameId', ParseIntPipe) gameId: number) {
+    const avg = await this.reviewsService.getAvaregeForGame(gameId);
+    return new AvarageEntity(avg._avg.score, gameId, avg._count);
   }
 
   @ApiBearerAuth()

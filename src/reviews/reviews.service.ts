@@ -39,6 +39,28 @@ export class ReviewsService {
     });
   }
 
+  async getAllAvaragesForEachGame() {
+    return await this.prisma.review.groupBy({
+      by: ['gameId'],
+      _avg: {
+        score: true,
+      },
+      _count: true,
+    });
+  }
+
+  async getAvaregeForGame(gameId: number) {
+    return await this.prisma.review.aggregate({
+      where: {
+        gameId: gameId,
+      },
+      _avg: {
+        score: true,
+      },
+      _count: true,
+    });
+  }
+
   async findAllForUser(userId: number) {
     return await this.prisma.review.findMany({
       where: {
