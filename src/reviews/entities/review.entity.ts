@@ -2,8 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Review } from '@prisma/client';
 
 export class ReviewEntity implements Review {
-  constructor(partial: Partial<Review>) {
+  constructor(partial: Partial<Review>, likeScore?: number) {
     Object.assign(this, partial);
+    this.likeScore = likeScore;
   }
 
   @ApiProperty()
@@ -24,4 +25,6 @@ export class ReviewEntity implements Review {
   userName: string;
   @ApiProperty()
   gameId: number;
+  @ApiProperty({ required: false })
+  likeScore: number;
 }

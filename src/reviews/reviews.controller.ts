@@ -28,7 +28,10 @@ export class ReviewsController {
   @Get('me')
   async getMe(@Req() req: any) {
     const reviews = await this.reviewsService.findAllForUser(req.user.id);
-    return reviews.map((review) => new ReviewEntity(review));
+    return reviews.map(
+      (review) =>
+        new ReviewEntity(review, review.likes.length - review.Dislikes.length),
+    );
   }
 
   @Get('avg')
@@ -59,17 +62,25 @@ export class ReviewsController {
 
   @Get('games/:gameId')
   async findAllForGame(@Param('gameId', ParseIntPipe) gameId: number) {
-    return this.reviewsService.findAllForGame(gameId);
+    const review = await this.reviewsService.findAllForGame(gameId);
+    return review.map(
+      (review) =>
+        new ReviewEntity(review, review.likes.length - review.Dislikes.length),
+    );
   }
 
   @Get('users/:userId')
   async findAllForUser(@Param('userId', ParseIntPipe) userId: number) {
-    return this.reviewsService.findAllForUser(userId);
+    const review = await this.reviewsService.findAllForUser(userId);
+    return review.map(
+      (review) =>
+        new ReviewEntity(review, review.likes.length - review.Dislikes.length),
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return new ReviewEntity(await this.reviewsService.findOne(+id));
   }
 
   @Patch(':id')

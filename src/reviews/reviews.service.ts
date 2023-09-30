@@ -35,6 +35,8 @@ export class ReviewsService {
             name: true,
           },
         },
+        likes: true,
+        Dislikes: true,
       },
     });
   }
@@ -73,6 +75,8 @@ export class ReviewsService {
             name: true,
           },
         },
+        likes: true,
+        Dislikes: true,
       },
     });
   }
@@ -110,6 +114,8 @@ export class ReviewsService {
             name: true,
           },
         },
+        likes: true,
+        Dislikes: true,
       },
     });
   }
