@@ -58,6 +58,18 @@ export class UsersController {
     );
   }
 
+  @Get(':id/followers')
+  async getFollowers(@Param('id', ParseIntPipe) id: number) {
+    const followers = await this.usersService.getFollowers(id);
+    return followers.map((user) => new UserEntity(user));
+  }
+
+  @Get(':id/following')
+  async getFollowing(@Param('id', ParseIntPipe) id: number) {
+    const following = await this.usersService.getFollowing(id);
+    return following.map((user) => new UserEntity(user));
+  }
+
   @Delete()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()

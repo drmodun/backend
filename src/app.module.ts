@@ -8,6 +8,7 @@ import { FavouritesModule } from './favourites/favourites.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { LikesModule } from './likes/likes.module';
 import { DislikesModule } from './dislikes/dislikes.module';
+import { FollowersModule } from './followers/followers.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { DislikesModule } from './dislikes/dislikes.module';
     ReviewsModule,
     LikesModule,
     DislikesModule,
+    FollowersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

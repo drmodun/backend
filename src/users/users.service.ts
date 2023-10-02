@@ -53,4 +53,30 @@ export class UsersService {
   remove(id: number) {
     return this.prisma.user.delete({ where: { id } });
   }
+
+  async getFollowers(userId: number) {
+    const followers = await this.prisma.follows.findMany({
+      where: {
+        followingId: userId,
+      },
+      include: {
+        follower: true,
+      },
+    });
+
+    return followers.map((follow) => follow.follower);
+  }
+
+  async getFollowing(userId: number) {
+    const following = await this.prisma.follows.findMany({
+      where: {
+        followerId: userId,
+      },
+      include: {
+        following: true,
+      },
+    });
+
+    return following.map((follow) => follow.following);
+  }
 }
