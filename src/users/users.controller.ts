@@ -36,7 +36,13 @@ export class UsersController {
   @ApiBearerAuth()
   @Get('me')
   async getMe(@Req() req: any) {
-    return new UserEntity(await this.usersService.findOne(req.user.id));
+    const user = await this.usersService.findOne(req.user.id);
+    return new UserEntity(
+      user,
+      user.Likes.length - user.Dislikes.length,
+      user.followers.length,
+      user.following.length,
+    );
   }
   @Get()
   async findAll() {
@@ -46,7 +52,13 @@ export class UsersController {
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    return new UserEntity(await this.usersService.findOne(+id));
+    const user = await this.usersService.findOne(id);
+    return new UserEntity(
+      user,
+      user.Likes.length - user.Dislikes.length,
+      user.followers.length,
+      user.following.length,
+    );
   }
 
   @Patch()

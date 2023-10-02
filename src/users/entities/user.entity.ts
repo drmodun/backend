@@ -3,8 +3,16 @@ import { User } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 
 export class UserEntity implements User {
-  constructor(partial: Partial<UserEntity>) {
+  constructor(
+    partial: Partial<User>,
+    likeScore?: number,
+    followers?: number,
+    following?: number,
+  ) {
     Object.assign(this, partial);
+    this.likeScore = likeScore;
+    this.followers = followers;
+    this.following = following;
   }
 
   @ApiProperty()
@@ -23,4 +31,14 @@ export class UserEntity implements User {
   updated: Date;
   @Exclude()
   password: string;
+  @Exclude()
+  Likes: any[];
+  @Exclude()
+  Dislikes: any[];
+  @ApiProperty({ required: false })
+  likeScore?: number;
+  @ApiProperty({ required: false })
+  followers?: number;
+  @ApiProperty({ required: false })
+  following?: number;
 }

@@ -17,7 +17,7 @@ export class FollowersController {
   constructor(private readonly followersService: FollowersService) {}
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Post(':userId')
+  @Post(':userId') 
   async toggleDislike(
     @Req() req: any,
     @Param('userId', ParseIntPipe) userId: number,
