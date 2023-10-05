@@ -50,4 +50,34 @@ export class LikesService {
       return await this.createLike(userId, reviewId);
     }
   }
+
+  async checkLikeStatus(userId: number, reviewId: number) {
+    const like = await this.prisma.likes.findUnique({
+      where: {
+        reviewId_userId: {
+          userId: userId,
+          reviewId: reviewId,
+        },
+      },
+    });
+
+    if (like) {
+      return 1;
+    }
+
+    const dislike = await this.prisma.dislikes.findUnique({
+      where: {
+        reviewId_userId: {
+          userId: userId,
+          reviewId: reviewId,
+        },
+      },
+    });
+
+    if (dislike) {
+      return -1;
+    }
+
+    return 0;
+  }
 }

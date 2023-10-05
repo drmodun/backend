@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Review } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
 export class ReviewEntity implements Review {
   constructor(partial: Partial<Review>, likeScore?: number) {
@@ -27,4 +28,8 @@ export class ReviewEntity implements Review {
   gameId: number;
   @ApiProperty({ required: false })
   likeScore: number;
+  @Exclude()
+  likes: any[];
+  @Exclude()
+  Dislikes: any[];
 }
