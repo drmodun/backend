@@ -35,6 +35,8 @@ export class UserEntity implements User {
   Likes: any[];
   @Exclude()
   Dislikes: any[];
+  @Exclude()
+  Reviews: any[];
   @ApiProperty({ required: false })
   likeScore?: number;
   @ApiProperty({ required: false })

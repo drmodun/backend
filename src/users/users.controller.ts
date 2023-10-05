@@ -37,9 +37,13 @@ export class UsersController {
   @Get('me')
   async getMe(@Req() req: any) {
     const user = await this.usersService.findOne(req.user.id);
+    const likeScore = user.Reviews.reduce(
+      (acc, review) => acc + review.likes.length - review.Dislikes.length,
+      0,
+    );
     return new UserEntity(
       user,
-      user.Likes.length - user.Dislikes.length,
+      likeScore,
       user.followers.length,
       user.following.length,
     );
@@ -53,9 +57,13 @@ export class UsersController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const user = await this.usersService.findOne(id);
+    const likeScore = user.Reviews.reduce(
+      (acc, review) => acc + review.likes.length - review.Dislikes.length,
+      0,
+    );
     return new UserEntity(
       user,
-      user.Likes.length - user.Dislikes.length,
+      likeScore,
       user.followers.length,
       user.following.length,
     );

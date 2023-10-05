@@ -35,8 +35,12 @@ export class UsersService {
       include: {
         followers: true,
         following: true,
-        Likes: true,
-        Dislikes: true,
+        Reviews: {
+          include: {
+            likes: true,
+            Dislikes: true,
+          },
+        },
       },
     });
     if (!user) {
