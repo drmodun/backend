@@ -49,4 +49,38 @@ export class FollowersService {
       return await this.follow(followerId, followingId);
     }
   }
+
+  async getFollowers(userId: number) {
+    return await this.prisma.follows.findMany({
+      where: {
+        followingId: userId,
+      },
+      include: {
+        follower: {
+          include: {
+            Likes: true,
+            Dislikes: true,
+            followers: true,
+          },
+        },
+      },
+    });
+  }
+
+  async getFollowing(userId: number) {
+    return await this.prisma.follows.findMany({
+      where: {
+        followerId: userId,
+      },
+      include: {
+        following: {
+          include: {
+            Likes: true,
+            Dislikes: true,
+            followers: true,
+          },
+        },
+      },
+    });
+  }
 }
