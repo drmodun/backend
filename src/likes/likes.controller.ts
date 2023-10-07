@@ -28,14 +28,9 @@ export class LikesController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Get(':reviewId')
-  async checkLikeStatus(
-    @Req() req: any,
-    @Param('reviewId', ParseIntPipe) reviewId: number,
-  ) {
-    const like = await this.likesService.checkLikeStatus(req.user.id, reviewId);
-    return {
-      liked: like,
-    };
+  @Get()
+  async getLikes(@Req() req: any) {
+    const info = await this.likesService.getLikes(req.user.id);
+    return info;
   }
 }

@@ -51,33 +51,25 @@ export class LikesService {
     }
   }
 
-  async checkLikeStatus(userId: number, reviewId: number) {
-    const like = await this.prisma.likes.findUnique({
+  async getLikes(userId: number) {
+    const likes = await this.prisma.likes.findMany({
       where: {
-        reviewId_userId: {
-          userId: userId,
-          reviewId: reviewId,
-        },
+        userId: userId,
       },
     });
 
-    if (like) {
-      return 1;
-    }
-
-    const dislike = await this.prisma.dislikes.findUnique({
+    const dislikes = await this.prisma.dislikes.findMany({
       where: {
-        reviewId_userId: {
-          userId: userId,
-          reviewId: reviewId,
-        },
+        userId: userId,
       },
     });
 
-    if (dislike) {
-      return -1;
-    }
+    const likesArray = likes.map((like) => like.reviewId);
+    const dislikesArray = dislikes.map((dislike) => dislike.reviewId);
 
-    return 0;
+    return {
+      likes: likesArray,
+      dislikes: dislikesArray,
+    };
   }
 }
