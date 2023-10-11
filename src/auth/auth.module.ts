@@ -16,7 +16,7 @@ export const jwtSecret = '1jL3o16O8LoSKcXj';
     UsersModule,
     JwtModule.register({
       secret: jwtSecret,
-      signOptions: { expiresIn: '8h' },
+      signOptions: { expiresIn: '24h' },
     }),
   ],
   controllers: [AuthController],
