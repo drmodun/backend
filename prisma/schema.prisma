@@ -28,9 +28,9 @@ model User {
 }
 
 model Follows {
-  follower    User @relation("follower", fields: [followerId], references: [id])
+  follower    User @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
   followerId  Int
-  following   User @relation("following", fields: [followingId], references: [id])
+  following   User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
   followingId Int
 
   @@id([followerId, followingId])
@@ -53,8 +53,8 @@ model Review {
 model Likes {
   reviewId Int
   userId   Int
-  review   Review?  @relation(fields: [reviewId], references: [id])
-  user     User?    @relation(fields: [userId], references: [id])
+  review   Review?  @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   likedAt  DateTime @default(now())
 
   @@id([reviewId, userId])
@@ -63,8 +63,8 @@ model Likes {
 model Dislikes {
   reviewId   Int
   userId     Int
-  review     Review?  @relation(fields: [reviewId], references: [id])
-  user       User?    @relation(fields: [userId], references: [id])
+  review     Review?  @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   dislikedAt DateTime @default(now())
 
   @@id([reviewId, userId])
@@ -73,7 +73,7 @@ model Dislikes {
 model Favourites {
   userId Int
   gameId Int
-  user   User?    @relation(fields: [userId], references: [id])
+  user   User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   genres String[]
 
   //Gotta save genres here since they dont appear on the details of the game
